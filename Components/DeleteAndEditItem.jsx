@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -7,8 +7,12 @@ import {
 import { RED_COLOR} from '../Constants';
 import DeleteIcon from 'react-native-vector-icons/MaterialIcons';
 import EditIcon from 'react-native-vector-icons/FontAwesome5';
+import { InputContext } from './TodoList';
 
-const DeleteAndEditItem = ({data, rowMap,todos,settodos}) => {
+const DeleteAndEditItem = ({data, rowMap,todos,settodos,setisEdited,setvalue,seteditId}) => {
+
+  const inputRef = useContext(InputContext);
+
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
@@ -18,9 +22,21 @@ const DeleteAndEditItem = ({data, rowMap,todos,settodos}) => {
   const deleteItem = (rowMap, dltkey) => {
     closeRow(rowMap, dltkey);
     const newData = [...todos];
-    const deletedTodos = newData.filter(t => t.key !== dltkey)
+    const deletedTodos = newData.filter(t => t.key !== dltkey);
     settodos(deletedTodos);
   };
+
+  function handleEditItem(rowMap, edtkey){
+    closeRow(rowMap, edtkey);
+    setisEdited(true);
+    const newData = [...todos];
+    const editTodoIndex = newData.findIndex(t => t.key === edtkey);
+    const todotoedit = newData[editTodoIndex];
+    console.log("Key" + todotoedit.key);
+    setvalue(todotoedit.todo)
+    inputRef?.current?.focus()
+    seteditId(todotoedit.key)
+  }
 
   return (
     <View style={styles.container}>
@@ -32,7 +48,7 @@ const DeleteAndEditItem = ({data, rowMap,todos,settodos}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.edtbtncntnr}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleEditItem(rowMap, data.item.key)}>
           <View style={styles.edtbtn}>
             <EditIcon name="pencil-alt" size={23} color={'white'} />
           </View>

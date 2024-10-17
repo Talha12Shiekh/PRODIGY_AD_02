@@ -4,28 +4,44 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {BLACK_COLOR, DARK_GREEN_COLOR, WHITE_COLOR} from '../Constants';
+import { InputContext } from './TodoList';
 
-const TodoInput = ({value, setvalue, settodos}) => {
+const TodoInput = ({todos,value, setvalue, settodos,setisEdited,isEdited,editId}) => {
+
+  const inputRef = useContext(InputContext);
+
   function handleAddTodos() {
     const todoObject = {
       todo: value,
       key: Date.now(),
     };
-    settodos(prev => [...prev, todoObject]);
+    if(isEdited){
+      const newTodos = [...todos];
+      const editedTodos = newTodos.find(t => t.key === editId);
+      editedTodos.todo = value;
+      settodos(newTodos);
+      inputRef?.current?.blur()
+    }else {
+      if(value === "") return ToastAndroid.show("You can not add an empty item",ToastAndroid.LONG);
+      settodos(prev => [...prev, todoObject]);
+    }
     setvalue('');
+    setisEdited(false)
   }
 
   return (
     <>
       <View>
         <TextInput
+          ref={inputRef}
           value={value}
           onChangeText={vlue => setvalue(vlue)}
           style={styles.input}
@@ -34,7 +50,7 @@ const TodoInput = ({value, setvalue, settodos}) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleAddTodos} style={styles.button}>
-          <Text style={styles.btnText}>Add Task</Text>
+          <Text style={styles.btnText}>{isEdited ? "Edit" : "Add"} Task</Text>
         </TouchableOpacity>
       </View>
     </>

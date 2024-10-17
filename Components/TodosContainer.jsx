@@ -4,34 +4,17 @@ import SingleTodo from './SingleTodo';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import DeleteAndEditItem from './DeleteAndEditItem';
 
-const TodosContainer = ({todos,settodos}) => {
+const TodosContainer = ({todos,settodos,setisEdited,setvalue,seteditId}) => {
+
   return (
-    <View style={styles.todoContainer}>
-      {/* <ScrollView showsVerticalScrollIndicator={false}>
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-        <SingleTodo />
-      </ScrollView> */}
+    <View style={styles.todoContainer}> 
       <SwipeListView
         data={todos}
         renderItem={(data, rowMap) => (
           <SingleTodo data={data} rowMap={rowMap} />
         )}
         renderHiddenItem={(data, rowMap) => (
-          <DeleteAndEditItem data={data} rowMap={rowMap} todos={todos} 
+          <DeleteAndEditItem seteditId={seteditId} setvalue={setvalue} setisEdited={setisEdited} data={data} rowMap={rowMap} todos={todos} 
           settodos={settodos}
           />
         )}
