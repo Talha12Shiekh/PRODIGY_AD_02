@@ -1,17 +1,44 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, { useContext } from 'react';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useContext} from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { RED_COLOR} from '../Constants';
+import {RED_COLOR} from '../Constants';
 import DeleteIcon from 'react-native-vector-icons/MaterialIcons';
 import EditIcon from 'react-native-vector-icons/FontAwesome5';
-import { InputContext } from './TodoList';
+import {InputContext} from './TodoList';
 
-const DeleteAndEditItem = ({data, rowMap,todos,settodos,setisEdited,setvalue,seteditId}) => {
-
+const DeleteAndEditItem = ({
+  data,
+  rowMap,
+  todos,
+  settodos,
+  setisEdited,
+  setvalue,
+  seteditId,
+}) => {
   const inputRef = useContext(InputContext);
+
+  function handleDeleteItem(rowMap, dltkey) {
+    const deleteTodo = todos.find(t => t.key === dltkey) ;
+
+    Alert.alert(`${deleteTodo.todo}`, 'Are you sure you want to delete', [
+      {
+        text: 'NO',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {text: 'Yes', onPress: () => deleteItem(rowMap, dltkey)},
+    ]);
+  }
 
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
@@ -24,24 +51,26 @@ const DeleteAndEditItem = ({data, rowMap,todos,settodos,setisEdited,setvalue,set
     const newData = [...todos];
     const deletedTodos = newData.filter(t => t.key !== dltkey);
     settodos(deletedTodos);
+    ToastAndroid.show('Item deleted Successfully', ToastAndroid.LONG);
   };
 
-  function handleEditItem(rowMap, edtkey){
+  function handleEditItem(rowMap, edtkey) {
     closeRow(rowMap, edtkey);
     setisEdited(true);
     const newData = [...todos];
     const editTodoIndex = newData.findIndex(t => t.key === edtkey);
     const todotoedit = newData[editTodoIndex];
-    console.log("Key" + todotoedit.key);
-    setvalue(todotoedit.todo)
-    inputRef?.current?.focus()
-    seteditId(todotoedit.key)
+    setvalue(todotoedit.todo);
+    inputRef?.current?.focus();
+    seteditId(todotoedit.key);
+    ToastAndroid.show('Item edited Successfully', ToastAndroid.LONG);
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.dltbtncntnr}>
-        <TouchableOpacity onPress={() => deleteItem(rowMap, data.item.key)}>
+        <TouchableOpacity
+          onPress={() => handleDeleteItem(rowMap, data.item.key)}>
           <View style={styles.dltbtn}>
             <DeleteIcon name="delete" size={30} color={'white'} />
           </View>
@@ -64,7 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderRadius: 10,
-    marginVertical: hp(0.6),
+    marginVertical: hp(1.5),
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'red',

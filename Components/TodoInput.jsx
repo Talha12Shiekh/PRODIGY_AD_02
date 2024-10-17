@@ -63,23 +63,28 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     border: '1px solid grey',
-    padding: wp(4),
+    padding: wp(3),
     borderRadius: 10,
     backgroundColor: BLACK_COLOR,
     color: WHITE_COLOR,
     fontSize: wp(4),
+    fontFamily: 'Poppins-Regular',
+    paddingTop:wp(5)
   },
   buttonContainer: {
     marginVertical: hp(2),
   },
   button: {
     backgroundColor: DARK_GREEN_COLOR,
-    padding: wp(3),
+    padding: wp(2),
     borderRadius: 10,
   },
   btnText: {
     color: 'white',
     textAlign: 'center',
     fontSize: wp(4),
+    fontFamily: 'Poppins-Regular',
+    fontSize:wp(4),
+    paddingTop:wp(.5)
   },
 });

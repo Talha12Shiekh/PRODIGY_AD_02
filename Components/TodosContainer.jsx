@@ -9,6 +9,7 @@ const TodosContainer = ({todos,settodos,setisEdited,setvalue,seteditId}) => {
   return (
     <View style={styles.todoContainer}> 
       <SwipeListView
+      showsVerticalScrollIndicator={false}
         data={todos}
         renderItem={(data, rowMap) => (
           <SingleTodo data={data} rowMap={rowMap} />
