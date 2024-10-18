@@ -13,12 +13,13 @@ import {
 } from 'react-native-responsive-screen';
 import {BLACK_COLOR, DARK_GREEN_COLOR, WHITE_COLOR} from '../Constants';
 import { InputContext } from './TodoList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TodoInput = ({todos,value, setvalue, settodos,setisEdited,isEdited,editId}) => {
 
   const inputRef = useContext(InputContext);
 
-  function handleAddTodos() {
+  async function handleAddTodos() {
     const todoObject = {
       todo: value,
       key: Date.now(),
@@ -28,13 +29,19 @@ const TodoInput = ({todos,value, setvalue, settodos,setisEdited,isEdited,editId}
       const editedTodos = newTodos.find(t => t.key === editId);
       editedTodos.todo = value;
       settodos(newTodos);
+      ToastAndroid.showWithGravity(
+        'Item edited successfully',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
       inputRef?.current?.blur()
     }else {
       if(value === "") return ToastAndroid.show("You can not add an empty item",ToastAndroid.LONG);
       settodos(prev => [...prev, todoObject]);
     }
     setvalue('');
-    setisEdited(false)
+    setisEdited(false);
+    await AsyncStorage.setItem("todos",JSON.stringify(todos))
   }
 
   return (
@@ -63,28 +70,28 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     border: '1px solid grey',
-    padding: wp(3),
+    padding: wp(4),
     borderRadius: 10,
     backgroundColor: BLACK_COLOR,
     color: WHITE_COLOR,
     fontSize: wp(4),
-    fontFamily: 'Poppins-Regular',
-    paddingTop:wp(5)
+    fontFamily:"Poppins-Regular",
+    paddingTop:wp(5),
+    paddingBottom:wp(3)
   },
   buttonContainer: {
     marginVertical: hp(2),
   },
   button: {
     backgroundColor: DARK_GREEN_COLOR,
-    padding: wp(2),
+    padding: wp(3),
     borderRadius: 10,
+    paddingBottom:wp(2)
   },
   btnText: {
     color: 'white',
     textAlign: 'center',
     fontSize: wp(4),
-    fontFamily: 'Poppins-Regular',
-    fontSize:wp(4),
-    paddingTop:wp(.5)
+    fontFamily:"Poppins-Regular",
   },
 });

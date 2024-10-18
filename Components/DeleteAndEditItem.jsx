@@ -63,7 +63,6 @@ const DeleteAndEditItem = ({
     setvalue(todotoedit.todo);
     inputRef?.current?.focus();
     seteditId(todotoedit.key);
-    ToastAndroid.show('Item edited Successfully', ToastAndroid.LONG);
   }
 
   return (
@@ -93,10 +92,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderRadius: 10,
-    marginVertical: hp(1.5),
+    marginVertical: hp(1),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: 'red',
   },
   dltbtncntnr: {
     flex: 1,

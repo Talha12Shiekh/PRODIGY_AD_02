@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     marginVertical: hp(0.6),
   },
   todoTxt: {
-    fontFamily: 'Poppins-Regular',
+    fontSize: wp(4),
+    fontFamily:"Poppins-Regular",
   }
 });
