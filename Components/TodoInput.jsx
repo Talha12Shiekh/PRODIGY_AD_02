@@ -13,7 +13,6 @@ import {
 } from 'react-native-responsive-screen';
 import {BLACK_COLOR, DARK_GREEN_COLOR, WHITE_COLOR} from '../Constants';
 import { InputContext } from './TodoList';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TodoInput = ({todos,value, setvalue, settodos,setisEdited,isEdited,editId}) => {
 
@@ -41,7 +40,6 @@ const TodoInput = ({todos,value, setvalue, settodos,setisEdited,isEdited,editId}
     }
     setvalue('');
     setisEdited(false);
-    await AsyncStorage.setItem("todos",JSON.stringify(todos))
   }
 
   return (

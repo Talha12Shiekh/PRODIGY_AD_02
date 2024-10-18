@@ -15,6 +15,8 @@ import {RED_COLOR} from '../Constants';
 import DeleteIcon from 'react-native-vector-icons/MaterialIcons';
 import EditIcon from 'react-native-vector-icons/FontAwesome5';
 import {InputContext} from './TodoList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const DeleteAndEditItem = ({
   data,
@@ -46,11 +48,12 @@ const DeleteAndEditItem = ({
     }
   };
 
-  const deleteItem = (rowMap, dltkey) => {
+  const deleteItem = async (rowMap, dltkey) => {
     closeRow(rowMap, dltkey);
     const newData = [...todos];
     const deletedTodos = newData.filter(t => t.key !== dltkey);
     settodos(deletedTodos);
+    await AsyncStorage.setItem("todos",JSON.stringify(deletedTodos))
     ToastAndroid.show('Item deleted Successfully', ToastAndroid.LONG);
   };
 

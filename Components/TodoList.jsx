@@ -9,12 +9,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const InputContext = createContext(null);
 
 const getTodos = async () => {
-  console.log("getting")
   const storedTodos = await AsyncStorage.getItem("todos");
-  if (storedTodos === "[]") {
-    return [];
-  } else {
+  if (storedTodos !== "null") {
     return JSON.parse(storedTodos);
+  } else {
+    console.log("Empty")
+    return [];
   }
 };
 
@@ -34,6 +34,14 @@ const TodoList = () => {
 
     fetchTodos();
   }, []);
+
+  useEffect(() => {
+    async function storeTodos() {
+      await AsyncStorage.setItem("todos",JSON.stringify(todos))
+    }
+
+    storeTodos();
+  }, [todos]);
 
 
   return (
