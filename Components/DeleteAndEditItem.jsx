@@ -14,7 +14,7 @@ import {
 import { RED_COLOR } from '../Constants';
 import DeleteIcon from 'react-native-vector-icons/MaterialIcons';
 import EditIcon from 'react-native-vector-icons/FontAwesome5';
-import { InputContext } from './TodoList';
+import { InputContext } from '../Screens/TodoScreen';
 import { useGetTodos } from '../App';
 import { useDispatch } from 'react-redux';
 import { deleteTodos, editTodos, handleCangeEditSettings } from '../Redux/Slices/TodosSlice';

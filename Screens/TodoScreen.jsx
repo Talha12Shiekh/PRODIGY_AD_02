@@ -1,9 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useRef, useState,createContext} from 'react';
-import TodoInput from './TodoInput';
 import {BG_COLOR} from '../Constants';
-import TodosContainer from './TodosContainer';
+import TodosContainer from '../Components/TodosContainer';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import TodoInput from '../Components/TodoInput';
 
 export const InputContext = createContext(null);
 

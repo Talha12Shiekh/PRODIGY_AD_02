@@ -12,7 +12,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {BLACK_COLOR, DARK_GREEN_COLOR, WHITE_COLOR} from '../Constants';
-import { InputContext } from './TodoList';
+import { InputContext } from '../Screens/TodoScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodos, handleCangeEditSettings } from '../Redux/Slices/TodosSlice';
 
