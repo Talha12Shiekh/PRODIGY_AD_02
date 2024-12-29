@@ -1,12 +1,13 @@
-import React, {  useState } from 'react'
-import ImageAndInputScreen from '../Components/ImageAndInputScreen'
+import React, { useState } from 'react'
+import ImageAndInputScreen from '../Components/ImageAndInputScreen';
+import auth from '@react-native-firebase/auth';
 
-const SignInScreen = () => {
+const SignUpScreen = () => {
 
   const [credentials, setcredentials] = useState({
     email: "",
     password: "",
-    image:""
+    image: ""
   });
 
   function handleChangeCredentials(name, value) {
@@ -16,11 +17,33 @@ const SignInScreen = () => {
     }))
   }
 
-  const {image} = credentials;
+  const { image, email, password } = credentials;
+
+  // implement IMAGE Into user also 
 
 
-  function handleActionofButtonClick() {
-    
+  async function handleActionofButtonClick() {
+    // PENDING SHOW LOADER 
+    if (email && password) {
+
+      try {
+        await auth()
+          .createUserWithEmailAndPassword(email, password)
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!'); // PENDING 
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!'); // PENDING
+        }
+
+        console.error(error);
+      }
+    } else {
+      // SHOW SNACKBAR
+    }
+
   }
 
 
@@ -31,7 +54,8 @@ const SignInScreen = () => {
     credentials={credentials}
     handleChangeCredentials={handleChangeCredentials}
     image={image}
+    setcredentials={setcredentials}
   />
 }
 
-export default SignInScreen;
+export default SignUpScreen;

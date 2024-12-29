@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { BG_COLOR, DARK_GREEN_COLOR, GREEN_COLOR } from '../Constants'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import GoggleIcon from "../assets/images/googleIcon.png";
+import auth from '@react-native-firebase/auth';
 
 
 export const SingleButton = ({ text, onPress }) => <TouchableOpacity onPress={onPress}>
@@ -34,6 +36,16 @@ const WelcomeScreen = ({ navigation }) => {
             navigation.navigate("SignUp")
           }}
         />
+        <TouchableOpacity onPress={() => {}}>
+          <View style={[styles.singlebtn,{backgroundColor:"white",borderWidth:1,gap:10,padding:0}]}>
+            <Image
+            source={GoggleIcon}
+            style={styles.ggleicn}
+            resizeMode='contain'
+            />
+            <Text style={[styles.btntext,{color:"black"}]}>Sign In with goggle</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -61,7 +73,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    alignSelf: "center"
+    alignSelf: "center",
+    flexDirection: "row"
   },
   btntext: {
     fontFamily: "Poppins-Regular",
@@ -71,12 +84,17 @@ const styles = StyleSheet.create({
   heading: {
     color: "black",
     textAlign: "center",
-    fontSize:wp(6),
+    fontSize: wp(6),
     fontFamily: "Poppins-Regular",
   },
   headingcontainer: {
     flex: 0.5, alignItems: "center",
 
+  },
+  ggleicn: {
+    width: wp(5),
+    height: hp(5),
+    margin:0
   }
 })
 

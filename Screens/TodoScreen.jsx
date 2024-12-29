@@ -4,6 +4,7 @@ import {BG_COLOR} from '../Constants';
 import TodosContainer from '../Components/TodosContainer';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import TodoInput from '../Components/TodoInput';
+import LogoAndProfile from '../Components/LogoAndProfile';
 
 export const InputContext = createContext(null);
 
@@ -14,6 +15,7 @@ const TodoList = () => {
   return (
     <InputContext.Provider value={inputRef}>
     <View style={styles.container}>
+      <LogoAndProfile/>
       <TodoInput
         value={value}
         setvalue={setvalue}

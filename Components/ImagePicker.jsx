@@ -33,7 +33,7 @@ const ImagePicker = ({ image, handleChangeCredentials }) => {
                 resizeMode='cover'
                 style={{ width: "100%", height: "100%", borderRadius: 100,transform:[{scale:image == "" ? 1.5 : 1}] }}
             />
-            {route.name == "SignIn" && <TouchableOpacity style={styles.camerabtn} onPress={handleImagePicking}>
+            {route.name == "SignUp" && <TouchableOpacity style={styles.camerabtn} onPress={handleImagePicking}>
 
                 <View style={styles.cameraContainer}>
                     <CameraIcon
