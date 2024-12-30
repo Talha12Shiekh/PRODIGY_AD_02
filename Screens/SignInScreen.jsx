@@ -1,15 +1,17 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import ImageAndInputScreen from '../Components/ImageAndInputScreen'
 import auth from '@react-native-firebase/auth';
 import { ToastAndroid } from 'react-native';
+import image from "../assets/images/login.png";
+import { useSetUserLoading } from '../App';
 
 const SignInScreen = () => {
 
+  const setusrlding = useSetUserLoading()
 
   const [credentials, setcredentials] = useState({
     email: "",
     password: "",
-    image:""
   });
 
   function handleChangeCredentials(name, value) {
@@ -19,21 +21,23 @@ const SignInScreen = () => {
     }))
   }
 
-  const {image,email,password} = credentials;
+  const { email, password } = credentials;
 
 
   async function handleActionofButtonClick() {
     if (email && password) {
 
       try {
-        await auth().signInWithEmailAndPassword(email,password);
-
-        ToastAndroid.show("User Signed in successfully !",ToastAndroid.LONG);
+        setusrlding(true);
+        await auth().signInWithEmailAndPassword(email, password);
+        setusrlding(false);
+        ToastAndroid.show("User Signed in successfully !", ToastAndroid.LONG);
       } catch (error) {
-       console.log(error);
+        console.log(error);
       }
     } else {
       // SHOW SNACKBAR
+      setusrlding(false);
     }
   }
 

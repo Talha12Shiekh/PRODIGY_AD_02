@@ -1,20 +1,22 @@
-import { Animated, Image, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Animated, Image, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { BG_COLOR, BLACK_COLOR, GREEN_COLOR } from '../Constants'
+import { BG_COLOR, BLACK_COLOR, DARK_GREEN_COLOR, GREEN_COLOR } from '../Constants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SingleButton } from '../Screens/WelcomeScreen'
 import BackButton from '../Components/BackButton'
 import ImagePicker from '../Components/ImagePicker';
 import EyeIcon from "react-native-vector-icons/Entypo";
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useGetUserLoading } from '../App'
 
-const ImageAndInputScreen = ({toptext,btntext,handleActionofButtonClick,credentials,handleChangeCredentials,image,setcredentials}) => {
+const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, credentials, handleChangeCredentials, image, setcredentials }) => {
   const [isKeyboardVisible, setisKeyboardVisible] = useState(false);
   const [showpswrd, setshowpswrd] = useState(true);
-  const imagePickerTranslateY = useRef(new Animated.Value(0)).current; 
-  const imagePickerOpacity = useRef(new Animated.Value(1)).current; 
+  const imagePickerTranslateY = useRef(new Animated.Value(0)).current;
+  const imagePickerOpacity = useRef(new Animated.Value(1)).current;
   const route = useRoute();
-  const navigation = useNavigation();
+
+  const userloading = useGetUserLoading();
 
   const { email, password } = credentials;
 
@@ -22,11 +24,10 @@ const ImageAndInputScreen = ({toptext,btntext,handleActionofButtonClick,credenti
   function handleButtonClick() {
     if (email && password) {
       handleActionofButtonClick()
-      navigation.navigate("TodosScreen");
       setcredentials({
-        email:"",
-        password:"",
-        image:""
+        email: "",
+        password: "",
+        image: ""
       });
     }
   }
@@ -90,9 +91,9 @@ const ImageAndInputScreen = ({toptext,btntext,handleActionofButtonClick,credenti
                 },
               ]}
             >
-              {!isKeyboardVisible && <ImagePicker 
-              image={image}
-              handleChangeCredentials={handleChangeCredentials}
+              {!isKeyboardVisible && <ImagePicker
+                image={image}
+                handleChangeCredentials={handleChangeCredentials}
               />}
             </Animated.View>
             <View style={[styles.inptcontainer, { justifyContent: isKeyboardVisible ? "center" : "" }]}>
@@ -101,7 +102,7 @@ const ImageAndInputScreen = ({toptext,btntext,handleActionofButtonClick,credenti
                 <Text style={styles.inputplaceholder}>Email</Text>
                 <TextInput
                   style={styles.input}
-                  onChangeText={t => handleChangeCredentials("email",t)}
+                  onChangeText={t => handleChangeCredentials("email", t)}
                   value={email}
                 />
               </View>
@@ -112,7 +113,7 @@ const ImageAndInputScreen = ({toptext,btntext,handleActionofButtonClick,credenti
                   style={styles.input}
                   secureTextEntry={showpswrd}
                   value={password}
-                  onChangeText={p => handleChangeCredentials("password",p)}
+                  onChangeText={p => handleChangeCredentials("password", p)}
                 />
                 <TouchableOpacity onPress={() => setshowpswrd(p => !p)} style={styles.eyeiconContainer}>
 
@@ -135,10 +136,13 @@ const ImageAndInputScreen = ({toptext,btntext,handleActionofButtonClick,credenti
           </View>
 
           <View style={styles.btncontainer}>
-            <SingleButton
+            {userloading ? <ActivityIndicator
+              size="large"
+              color={DARK_GREEN_COLOR}
+            /> : <SingleButton
               text={btntext}
               onPress={handleButtonClick}
-            />
+            />}
           </View>
         </View>
 

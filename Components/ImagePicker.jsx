@@ -3,7 +3,6 @@ import React from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CameraIcon from "react-native-vector-icons/Entypo";
 import { GREEN_COLOR } from '../Constants';
-
 import ImagePickerPackage from 'react-native-image-crop-picker';
 import ProfileImage from "../assets/images/profile.png";
 import { useRoute } from '@react-navigation/native';
@@ -27,13 +26,13 @@ const ImagePicker = ({ image, handleChangeCredentials }) => {
 
 
     return (
-        <View style={styles.pickercontainer}>
+        <View style={[styles.pickercontainer,{backgroundColor:route.name == "SignIn" ? "transparent" : "grey"}]}>
             <Image
                 source={image == "" ? ProfileImage : image}
                 resizeMode='cover'
                 style={{ width: "100%", height: "100%", borderRadius: 100,transform:[{scale:image == "" ? 1.5 : 1}] }}
             />
-            {route.name == "SignUp" && <TouchableOpacity style={styles.camerabtn} onPress={handleImagePicking}>
+            <TouchableOpacity style={styles.camerabtn} onPress={handleImagePicking}>
 
                 <View style={styles.cameraContainer}>
                     <CameraIcon
@@ -42,7 +41,7 @@ const ImagePicker = ({ image, handleChangeCredentials }) => {
                         color="black"
                     />
                 </View>
-            </TouchableOpacity>}
+            </TouchableOpacity>
         </View>
     )
 }
@@ -53,7 +52,6 @@ const styles = StyleSheet.create({
     pickercontainer: {
         width: wp(50),
         aspectRatio: 1,
-        backgroundColor: "grey",
         borderRadius: 100,
         marginVertical: wp(10),
         position: "relative"

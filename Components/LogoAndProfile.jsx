@@ -1,11 +1,12 @@
 import { Image, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import MyImg from "../assets/images/Talha-img.jpeg";
 import TodoLogo from "../assets/images/todo-icon.png";
 import auth from '@react-native-firebase/auth';
+import ProfileImage from "../assets/images/profile.png";
 
-const LogoAndProfile = () => {
+
+const LogoAndProfile = ({userimage}) => {
 
     async function handleSignOut() {
         try {
@@ -28,8 +29,8 @@ const LogoAndProfile = () => {
                 <View style={styles.userprofile}>
                     <Image
                         resizeMode='cover'
-                        source={MyImg}
-                        style={{ width: "100%", height: "100%" }}
+                        source={userimage ? userimage :  ProfileImage}
+                        style={{ width: "100%", height: "100%" , transform:[{scale:userimage ? 1 : 1.5}] }}
                     />
                 </View>
             </TouchableOpacity>

@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import ImageAndInputScreen from '../Components/ImageAndInputScreen';
 import auth from '@react-native-firebase/auth';
+import { setuserloading, useSetUserLoading } from '../App';
 
-const SignUpScreen = () => {
+const SignUpScreen = ({setuserimage}) => {
+
+  const setusrlding = useSetUserLoading();
 
   const [credentials, setcredentials] = useState({
     email: "",
@@ -19,16 +22,17 @@ const SignUpScreen = () => {
 
   const { image, email, password } = credentials;
 
-  // implement IMAGE Into user also 
 
 
   async function handleActionofButtonClick() {
     // PENDING SHOW LOADER 
     if (email && password) {
-
+      setuserimage(image);
       try {
+        setusrlding(true)
         await auth()
-          .createUserWithEmailAndPassword(email, password)
+          .createUserWithEmailAndPassword(email, password);
+          setusrlding(false);
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!'); // PENDING 
@@ -42,6 +46,7 @@ const SignUpScreen = () => {
       }
     } else {
       // SHOW SNACKBAR
+      setusrlding(false);
     }
 
   }

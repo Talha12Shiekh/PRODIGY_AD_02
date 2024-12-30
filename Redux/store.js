@@ -8,4 +8,8 @@ export const store = configureStore({
     todosReducer:todosReducer,
     userReducer:userReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // Disable the serializable check
+    }),
 })

@@ -4,6 +4,11 @@ import { BG_COLOR, DARK_GREEN_COLOR, GREEN_COLOR } from '../Constants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import GoggleIcon from "../assets/images/googleIcon.png";
 import auth from '@react-native-firebase/auth';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 
 export const SingleButton = ({ text, onPress }) => <TouchableOpacity onPress={onPress}>
@@ -13,6 +18,33 @@ export const SingleButton = ({ text, onPress }) => <TouchableOpacity onPress={on
 </TouchableOpacity>;
 
 const WelcomeScreen = ({ navigation }) => {
+  const clientid =  "750472851543-e968ds7phcn9i8lhak0kglq1tnafmmjh.apps.googleusercontent.com";
+
+  GoogleSignin.configure({
+    webClientId:clientid,
+  });
+
+  // PENDING GOGGLE SIGN IN
+
+  const handleGoggleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      // Get the users ID token
+      const {idToken} = await GoogleSignin.signIn();
+
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
+      // const firebaseUserCredential = await auth().currentUser.linkWithCredential(googleCredential);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
@@ -36,7 +68,7 @@ const WelcomeScreen = ({ navigation }) => {
             navigation.navigate("SignUp")
           }}
         />
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={handleGoggleSignIn}>
           <View style={[styles.singlebtn,{backgroundColor:"white",borderWidth:1,gap:10,padding:0}]}>
             <Image
             source={GoggleIcon}

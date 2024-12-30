@@ -8,14 +8,16 @@ import LogoAndProfile from '../Components/LogoAndProfile';
 
 export const InputContext = createContext(null);
 
-const TodoList = () => {
+const TodoList = ({userimage}) => {
   const [value, setvalue] = useState('');
   const inputRef = useRef(null);
 
   return (
     <InputContext.Provider value={inputRef}>
     <View style={styles.container}>
-      <LogoAndProfile/>
+      <LogoAndProfile
+      userimage={userimage}
+      />
       <TodoInput
         value={value}
         setvalue={setvalue}
