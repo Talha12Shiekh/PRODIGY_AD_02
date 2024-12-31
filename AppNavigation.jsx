@@ -41,8 +41,16 @@ const AppNavigation = () => {
   } else {
     return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Welcome">
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="Welcome" >
+        {
+          props => <WelcomeScreen setuserimage={setuserimage} {...props}/>
+        }
+      </Stack.Screen>
+      <Stack.Screen name="SignIn" >
+        {
+          props => <SignInScreen setuserimage={setuserimage} {...props}/>
+        }
+      </Stack.Screen>
       <Stack.Screen name="SignUp" >
         {
           props => <SignUpScreen setuserimage={setuserimage} {...props}/>

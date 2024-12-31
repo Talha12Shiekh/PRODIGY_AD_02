@@ -22,14 +22,12 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
 
 
   function handleButtonClick() {
-    if (email && password) {
       handleActionofButtonClick()
       setcredentials({
         email: "",
         password: "",
         image: ""
       });
-    }
   }
 
   useEffect(() => {

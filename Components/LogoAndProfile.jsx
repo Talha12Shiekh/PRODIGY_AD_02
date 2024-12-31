@@ -4,18 +4,32 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import TodoLogo from "../assets/images/todo-icon.png";
 import auth from '@react-native-firebase/auth';
 import ProfileImage from "../assets/images/profile.png";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 
 const LogoAndProfile = ({userimage}) => {
 
     async function handleSignOut() {
+
         try {
-            await auth().signOut();
+            // if(userimage.goggleSignIn){
+            //     await GoogleSignin.signOut();
+            // }else {
+                await auth().signOut();
+            // }
         } catch (error) {
             console.log(error);
         }
 
         ToastAndroid.show("User Signed Out !", ToastAndroid.LONG);
+    }
+
+    console.log(userimage);
+    let profileimage = ProfileImage;
+    if(userimage.goggleSignIn) {
+        profileimage = {uri:userimage.image}
+    }else if(!userimage.goggleSignIn) {
+        profileimage = {uri:userimage.image?.uri};
     }
 
     return (
@@ -29,7 +43,7 @@ const LogoAndProfile = ({userimage}) => {
                 <View style={styles.userprofile}>
                     <Image
                         resizeMode='cover'
-                        source={userimage ? userimage :  ProfileImage}
+                        source={profileimage}
                         style={{ width: "100%", height: "100%" , transform:[{scale:userimage ? 1 : 1.5}] }}
                     />
                 </View>

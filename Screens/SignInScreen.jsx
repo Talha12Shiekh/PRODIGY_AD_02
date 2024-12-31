@@ -5,7 +5,7 @@ import { ToastAndroid } from 'react-native';
 import image from "../assets/images/login.png";
 import { useSetUserLoading } from '../App';
 
-const SignInScreen = () => {
+const SignInScreen = ({setuserimage}) => {
 
   const setusrlding = useSetUserLoading()
 
@@ -29,14 +29,22 @@ const SignInScreen = () => {
 
       try {
         setusrlding(true);
-        await auth().signInWithEmailAndPassword(email, password);
+        console.log("user signed in")
+        const user = await auth().signInWithEmailAndPassword(email, password);
+        // console.log(user);
+        
+        // setuserimage({image:user.additionalUserInfo.profile.picture,goggleSignIn:false});
+        // console.log("user signed in 2")
         setusrlding(false);
         ToastAndroid.show("User Signed in successfully !", ToastAndroid.LONG);
       } catch (error) {
         console.log(error);
       }
     } else {
-      // SHOW SNACKBAR
+      Snackbar.show({
+        text: 'Email and password are required',
+        backgroundColor: "red"
+    });
       setusrlding(false);
     }
   }

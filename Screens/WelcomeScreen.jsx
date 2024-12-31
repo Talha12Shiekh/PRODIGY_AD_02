@@ -6,8 +6,8 @@ import GoggleIcon from "../assets/images/googleIcon.png";
 import auth from '@react-native-firebase/auth';
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
+  
 } from '@react-native-google-signin/google-signin';
 
 
@@ -17,31 +17,40 @@ export const SingleButton = ({ text, onPress }) => <TouchableOpacity onPress={on
   </View>
 </TouchableOpacity>;
 
-const WelcomeScreen = ({ navigation }) => {
-  const clientid =  "750472851543-e968ds7phcn9i8lhak0kglq1tnafmmjh.apps.googleusercontent.com";
+const WelcomeScreen = ({ navigation,setuserimage }) => {
 
   GoogleSignin.configure({
-    webClientId:clientid,
+    webClientId: '750472851543-e968ds7phcn9i8lhak0kglq1tnafmmjh.apps.googleusercontent.com',
   });
 
   // PENDING GOGGLE SIGN IN
 
   const handleGoggleSignIn = async () => {
     try {
-      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-      // Get the users ID token
-      const {idToken} = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      
+      const { idToken } = await GoogleSignin.signIn();
+      
+      const getToken = await GoogleSignin.getTokens()
+  
+      const googleCredential = auth.GoogleAuthProvider.credential(getToken.idToken);
 
-      // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-      // Sign-in the user with the credential
-      return auth().signInWithCredential(googleCredential);
-      // const firebaseUserCredential = await auth().currentUser.linkWithCredential(googleCredential);
+      const user = await auth().signInWithCredential(googleCredential);
+      
+      setuserimage({image:user.additionalUserInfo.profile.picture,goggleSignIn:true});
     } catch (error) {
-      console.log(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log("User cancelled the sign-in.");
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log("Sign-in is in progress.");
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log("Play Services not available.");
+      } else {
+        console.log("Unknown error:", error);
+      }
     }
   };
+  
 
 
 
@@ -75,7 +84,7 @@ const WelcomeScreen = ({ navigation }) => {
             style={styles.ggleicn}
             resizeMode='contain'
             />
-            <Text style={[styles.btntext,{color:"black"}]}>Sign In with goggle</Text>
+            <Text style={[styles.btntext,{color:"black"}]}>Sign In with google</Text>
           </View>
         </TouchableOpacity>
       </View>
