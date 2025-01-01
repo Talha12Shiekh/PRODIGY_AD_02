@@ -33,12 +33,7 @@ const SignUpScreen = () => {
       try {
         setusrlding(true)
         await auth()
-          .createUserWithEmailAndPassword(email, password);
-
-
-        await firebase.auth().currentUser.updateProfile({
-          photoURL:userimage.uri
-        });
+          .createUserWithEmailAndPassword(email, password); 
 
         Snackbar.show({
           text: 'Account created successfully!',
@@ -69,7 +64,6 @@ const SignUpScreen = () => {
         text: 'Email and password are required',
         backgroundColor: "red"
       });
-      console.log("NO")
       setusrlding(false);
     }
 

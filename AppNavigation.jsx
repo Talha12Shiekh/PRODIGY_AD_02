@@ -13,9 +13,8 @@ import { useGetUserImage } from './App';
 
 const AppNavigation = () => {
   const user = useSelector((state) => state.userReducer.user);
-  // const userimage = useGetUserImage();
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch();  
 
   const Stack = createNativeStackNavigator();
 

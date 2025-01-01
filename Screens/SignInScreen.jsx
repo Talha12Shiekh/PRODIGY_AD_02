@@ -29,7 +29,6 @@ const SignInScreen = () => {
 
       try {
         setusrlding(true);
-        console.log("user signed in")
         const user = await auth().signInWithEmailAndPassword(email, password);
         
         setusrlding(false);

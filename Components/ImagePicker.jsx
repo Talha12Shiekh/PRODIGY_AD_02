@@ -10,7 +10,7 @@ import { useGetUserImage, useSetUserImage } from '../App';
 import loginimage from "../assets/images/login.png";
 
 const ImagePicker = () => {
-    const handleChangeuserimage = useSetUserImage();
+    const setuserimage = useSetUserImage();
 
     const userimage = useGetUserImage();
 
@@ -21,7 +21,7 @@ const ImagePicker = () => {
             cropping: true,
             cropperCircleOverlay: true
         }).then(({ path }) => {
-            handleChangeuserimage({ uri: path })
+            setuserimage({ uri: path });
         });
     }
 
