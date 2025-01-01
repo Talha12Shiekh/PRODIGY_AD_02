@@ -9,7 +9,7 @@ import EyeIcon from "react-native-vector-icons/Entypo";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useGetUserLoading } from '../App'
 
-const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, credentials, handleChangeCredentials, image, setcredentials }) => {
+const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, credentials, handleChangeCredentials, setcredentials }) => {
   const [isKeyboardVisible, setisKeyboardVisible] = useState(false);
   const [showpswrd, setshowpswrd] = useState(true);
   const imagePickerTranslateY = useRef(new Animated.Value(0)).current;
@@ -89,10 +89,7 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
                 },
               ]}
             >
-              {!isKeyboardVisible && <ImagePicker
-                image={image}
-                handleChangeCredentials={handleChangeCredentials}
-              />}
+              {!isKeyboardVisible && <ImagePicker />}
             </Animated.View>
             <View style={[styles.inptcontainer, { justifyContent: isKeyboardVisible ? "center" : "" }]}>
               <View>

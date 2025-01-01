@@ -7,21 +7,20 @@ import { setuser } from './Redux/Slices/UserSlice';
 import auth from '@react-native-firebase/auth';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
-import ProfileImage from "./assets/images/profile.png";
+import { useGetUserImage } from './App';
 
 
 
 const AppNavigation = () => {
   const user = useSelector((state) => state.userReducer.user);
+  // const userimage = useGetUserImage();
 
   const dispatch = useDispatch();
 
   const Stack = createNativeStackNavigator();
 
-  const [userimage,setuserimage] = useState(ProfileImage);
-
   function onAuthStateChanged(user) {
-    console.log(user);
+    console.log("User",user);
     dispatch(setuser(user));
   }
 
@@ -33,29 +32,15 @@ const AppNavigation = () => {
   if (user) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="TodosScreen">
-        <Stack.Screen name="TodosScreen" >
-        {props => <TodoList userimage={userimage} {...props}/>}
-          </Stack.Screen>
+         <Stack.Screen name="TodosScreen" component={TodoList} />
       </Stack.Navigator>
     )
   } else {
     return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Welcome">
-      <Stack.Screen name="Welcome" >
-        {
-          props => <WelcomeScreen setuserimage={setuserimage} {...props}/>
-        }
-      </Stack.Screen>
-      <Stack.Screen name="SignIn" >
-        {
-          props => <SignInScreen setuserimage={setuserimage} {...props}/>
-        }
-      </Stack.Screen>
-      <Stack.Screen name="SignUp" >
-        {
-          props => <SignUpScreen setuserimage={setuserimage} {...props}/>
-        }
-      </Stack.Screen>
+      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
     </Stack.Navigator>
     )
   }

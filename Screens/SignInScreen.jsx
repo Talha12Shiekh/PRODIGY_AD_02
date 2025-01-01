@@ -5,7 +5,7 @@ import { ToastAndroid } from 'react-native';
 import image from "../assets/images/login.png";
 import { useSetUserLoading } from '../App';
 
-const SignInScreen = ({setuserimage}) => {
+const SignInScreen = () => {
 
   const setusrlding = useSetUserLoading()
 
@@ -31,10 +31,7 @@ const SignInScreen = ({setuserimage}) => {
         setusrlding(true);
         console.log("user signed in")
         const user = await auth().signInWithEmailAndPassword(email, password);
-        // console.log(user);
         
-        // setuserimage({image:user.additionalUserInfo.profile.picture,goggleSignIn:false});
-        // console.log("user signed in 2")
         setusrlding(false);
         ToastAndroid.show("User Signed in successfully !", ToastAndroid.LONG);
       } catch (error) {

@@ -5,9 +5,13 @@ import TodoLogo from "../assets/images/todo-icon.png";
 import auth from '@react-native-firebase/auth';
 import ProfileImage from "../assets/images/profile.png";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useGetUser } from '../App';
 
 
-const LogoAndProfile = ({userimage}) => {
+const LogoAndProfile = () => {
+    const currentUser = useGetUser();
+
+    console.log("Logo",currentUser);
 
     async function handleSignOut() {
 
@@ -24,13 +28,13 @@ const LogoAndProfile = ({userimage}) => {
         ToastAndroid.show("User Signed Out !", ToastAndroid.LONG);
     }
 
-    console.log(userimage);
-    let profileimage = ProfileImage;
-    if(userimage.goggleSignIn) {
-        profileimage = {uri:userimage.image}
-    }else if(!userimage.goggleSignIn) {
-        profileimage = {uri:userimage.image?.uri};
-    }
+    // console.log(userimage);
+    // let profileimage = ProfileImage;
+    // if(userimage.goggleSignIn) {
+    //     profileimage = {uri:userimage.image}
+    // }else if(!userimage.goggleSignIn) {
+    //     profileimage = {uri:userimage.image?.uri};
+    // }
 
     return (
         <View style={styles.container}>
@@ -43,8 +47,8 @@ const LogoAndProfile = ({userimage}) => {
                 <View style={styles.userprofile}>
                     <Image
                         resizeMode='cover'
-                        source={profileimage}
-                        style={{ width: "100%", height: "100%" , transform:[{scale:userimage ? 1 : 1.5}] }}
+                        source={{uri:currentUser.photoURL}}
+                        style={{ width: "100%", height: "100%" }}
                     />
                 </View>
             </TouchableOpacity>

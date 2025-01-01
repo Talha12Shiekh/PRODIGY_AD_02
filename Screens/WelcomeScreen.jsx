@@ -17,7 +17,7 @@ export const SingleButton = ({ text, onPress }) => <TouchableOpacity onPress={on
   </View>
 </TouchableOpacity>;
 
-const WelcomeScreen = ({ navigation,setuserimage }) => {
+const WelcomeScreen = ({ navigation }) => {
 
   GoogleSignin.configure({
     webClientId: '750472851543-e968ds7phcn9i8lhak0kglq1tnafmmjh.apps.googleusercontent.com',
@@ -37,7 +37,6 @@ const WelcomeScreen = ({ navigation,setuserimage }) => {
 
       const user = await auth().signInWithCredential(googleCredential);
       
-      setuserimage({image:user.additionalUserInfo.profile.picture,goggleSignIn:true});
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log("User cancelled the sign-in.");

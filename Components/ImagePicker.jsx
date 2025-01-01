@@ -6,9 +6,13 @@ import { GREEN_COLOR } from '../Constants';
 import ImagePickerPackage from 'react-native-image-crop-picker';
 import ProfileImage from "../assets/images/profile.png";
 import { useRoute } from '@react-navigation/native';
+import { useGetUserImage, useSetUserImage } from '../App';
+import loginimage from "../assets/images/login.png";
 
-const ImagePicker = ({ image, handleChangeCredentials }) => {
+const ImagePicker = () => {
+    const handleChangeuserimage = useSetUserImage();
 
+    const userimage = useGetUserImage();
 
     function handleImagePicking() {
         ImagePickerPackage.openPicker({
@@ -17,20 +21,28 @@ const ImagePicker = ({ image, handleChangeCredentials }) => {
             cropping: true,
             cropperCircleOverlay: true
         }).then(({ path }) => {
-            handleChangeCredentials("image", { uri: path })
+            handleChangeuserimage({ uri: path })
         });
     }
 
     const route = useRoute();
 
-
+    let imagetoshow = "";
+    if(route.name == "SignIn") imagetoshow = loginimage;
+    else if(userimage == null) imagetoshow = ProfileImage;
+    else imagetoshow = userimage;
 
     return (
         <View style={[styles.pickercontainer,{backgroundColor:route.name == "SignIn" ? "transparent" : "grey"}]}>
-            <Image
-                source={image == "" ? ProfileImage : image}
+            {/* <Image
+                source={userimage == null ? ProfileImage : userimage}
                 resizeMode='cover'
-                style={{ width: "100%", height: "100%", borderRadius: 100,transform:[{scale:image == "" ? 1.5 : 1}] }}
+                style={{ width: "100%", height: "100%", borderRadius: 100,transform:[{scale:userimage == null ? 1.5 : 1}] }}
+            /> */}
+            <Image
+                source={imagetoshow}
+                resizeMode='cover'
+                style={{ width: "100%", height: "100%", borderRadius: 100,transform:[{scale:userimage == null ? 1.5 : 1}] }}
             />
             {route.name == "SignUp" && <TouchableOpacity style={styles.camerabtn} onPress={handleImagePicking}>
 
