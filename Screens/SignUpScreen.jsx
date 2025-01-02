@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import ImageAndInputScreen from '../Components/ImageAndInputScreen';
-import auth, { firebase } from '@react-native-firebase/auth';
-import { useGetUserImage, useSetUserImage, useSetUserLoading } from '../App';
-import Snackbar from 'react-native-snackbar';
+import auth from '@react-native-firebase/auth';
+import { useSetUserImage, useSetUserLoading } from '../App';
+import { handleShowSnackbar } from './SignInScreen';
 
 const SignUpScreen = () => {
+
+  // first user clicks on forget password -> then it takes to a screen where the user enters her mail -> from the mail user clicks on reset password -> when clicks the reset password it takes user to a screen where user enters new password and confirms it also -> after that it takes user back to the sign in screen -> then user enters the email and new password and gets sign in
 
   const setusrlding = useSetUserLoading();
 
   const setuserimage = useSetUserImage();
 
-  const userimage = useGetUserImage();
 
   const [credentials, setcredentials] = useState({
     email: "",
@@ -35,35 +36,22 @@ const SignUpScreen = () => {
         await auth()
           .createUserWithEmailAndPassword(email, password); 
 
-        Snackbar.show({
-          text: 'Account created successfully!',
-          backgroundColor: 'green',
-        });
+        handleShowSnackbar('Account created successfully!', "green");
 
         setusrlding(false);
         setuserimage(null);
       } catch (error) {
         setusrlding(false);
         if (error.code === 'auth/email-already-in-use') {
-          Snackbar.show({
-            text: 'Email is already in use',
-            backgroundColor: "red"
-          });
+          handleShowSnackbar('Email is already in use', "red");
+        } else if (error.code === 'auth/invalid-email') {
+          handleShowSnackbar('Invalid Email!', "red");
+        } else {
+          handleShowSnackbar('An unexpected error occurred. Please try again.', "red");
         }
-
-        if (error.code === 'auth/invalid-email') {
-          Snackbar.show({
-            text: 'Invalid Email !',
-            backgroundColor: "red"
-          });
-        }
-
       }
     } else {
-      Snackbar.show({
-        text: 'Email and password are required',
-        backgroundColor: "red"
-      });
+      handleShowSnackbar('Email and password are required', "red");
       setusrlding(false);
     }
 

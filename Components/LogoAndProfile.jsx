@@ -1,14 +1,19 @@
 import { Image, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import TodoLogo from "../assets/images/todo-icon.png";
 import auth, { firebase } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useGetUserImage } from '../App';
 import ProfileImage from "../assets/images/profile.png";
+import { Menu } from './Menu';
 
 const LogoAndProfile = () => {
     let currentUser = auth().currentUser;
+    const menuRef = useRef(null);
+
+    // talha123@gmail.com
+    // talha123
 
     const [isImageUpdated, setIsImageUpdated] = useState(false);
 
@@ -30,6 +35,7 @@ const LogoAndProfile = () => {
         }
     }
 
+
     useEffect(() => {
         if (userimage?.uri) {
             handleChangeProfileImage();
@@ -47,23 +53,38 @@ const LogoAndProfile = () => {
         ToastAndroid.show("User Signed Out!", ToastAndroid.LONG);
     }
 
+    let imagetoshow = "";
+    if (currentUser?.photoURL) imagetoshow = { uri: currentUser?.photoURL }
+    else if (userimage?.uri) imagetoshow = { uri: userimage?.uri }
+    else imagetoshow = ProfileImage;
+
     return (
-        <View style={styles.container}>
-            <Image
-                resizeMode='cover'
-                source={TodoLogo}
-                style={{ width: wp(15), height: hp(6) }}
+        <>
+            <Menu
+                ref={menuRef}
             />
-            <TouchableOpacity onPress={handleSignOut}>
-                <View style={styles.userprofile}>
-                    <Image
-                        resizeMode='cover'
-                        source={{ uri: currentUser?.photoURL || userimage?.uri || ProfileImage}} // Default fallback if no photoURL
-                        style={{ width: "100%", height: "100%" }}
-                    />
-                </View>
-            </TouchableOpacity>
-        </View>
+            <View style={styles.container}>
+                <Image
+                    resizeMode='cover'
+                    source={TodoLogo}
+                    style={{ width: wp(15), height: hp(6) }}
+                />
+                <Menu
+                    handleSignOut={handleSignOut}
+                    ref={menuRef}
+                >
+                    <TouchableOpacity onPress={() => menuRef.current?.show()}>
+                        <View style={styles.userprofile}>
+                            <Image
+                                resizeMode='cover'
+                                source={imagetoshow}
+                                style={{ width: "100%", height: "100%" }}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </Menu>
+            </View>
+        </>
     )
 }
 
