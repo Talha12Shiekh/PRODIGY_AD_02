@@ -88,7 +88,7 @@ const SignInScreen = () => {
     handleActionofButtonClick={handleActionofButtonClick}
     credentials={credentials}
     handleChangeCredentials={handleChangeCredentials}
-    image={image}
+    topimage={image}
     setcredentials={setcredentials}
   />
 }

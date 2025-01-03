@@ -8,6 +8,7 @@ import auth from '@react-native-firebase/auth';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { useGetUserImage } from './App';
+import EmailEnterScreen from './Screens/EmailEnterScreen';
 
 
 
@@ -40,6 +41,7 @@ const AppNavigation = () => {
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="SignIn" component={SignInScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="EmailEnter" component={EmailEnterScreen} />
     </Stack.Navigator>
     )
   }

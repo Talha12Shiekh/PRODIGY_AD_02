@@ -8,12 +8,17 @@ import ImagePicker from '../Components/ImagePicker';
 import EyeIcon from "react-native-vector-icons/Entypo";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useGetUserLoading } from '../App'
+import { styles } from '../styles'
+import ImagePickerContainer from './ImagePickerContainer'
 
-const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, credentials, handleChangeCredentials, setcredentials }) => {
-  const [isKeyboardVisible, setisKeyboardVisible] = useState(false);
+const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, credentials, handleChangeCredentials, setcredentials,topimage }) => {
+  
   const [showpswrd, setshowpswrd] = useState(true);
-  const imagePickerTranslateY = useRef(new Animated.Value(0)).current;
-  const imagePickerOpacity = useRef(new Animated.Value(1)).current;
+
+  const [isKeyboardVisible, setisKeyboardVisible] = useState(false);
+  
+  const navigation = useNavigation();
+ 
   const route = useRoute();
 
   const userloading = useGetUserLoading();
@@ -30,44 +35,7 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
       });
   }
 
-  useEffect(() => {
-    const keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setisKeyboardVisible(true);
-      Animated.parallel([
-        Animated.timing(imagePickerTranslateY, {
-          toValue: -wp(50), // Move the ImagePicker up off-screen
-          duration: 300,
-          useNativeDriver: true, // Smooth animations
-        }),
-        Animated.timing(imagePickerOpacity, {
-          toValue: 0, // Fade out
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    });
 
-    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setisKeyboardVisible(false);
-      Animated.parallel([
-        Animated.timing(imagePickerTranslateY, {
-          toValue: 0, // Bring the ImagePicker back to its original position
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.timing(imagePickerOpacity, {
-          toValue: 1, // Fade in
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    });
-
-    return () => {
-      keyboardShowListener.remove();
-      keyboardHideListener.remove();
-    };
-  }, [imagePickerTranslateY, imagePickerOpacity]);
 
   return (
 
@@ -80,18 +48,12 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
         <View style={{ flex: 1 }}>
 
           <View style={styles.imgandinputcontainer}>
-            <Animated.View
-              style={[
-                styles.imagePickerContainer,
-                {
-                  transform: [{ translateY: imagePickerTranslateY }],
-                  opacity: imagePickerOpacity,
-                },
-              ]}
-            >
-              {!isKeyboardVisible && <ImagePicker />}
-            </Animated.View>
-            <View style={[styles.inptcontainer, { justifyContent: isKeyboardVisible ? "center" : "" }]}>
+           <ImagePickerContainer
+           isKeyboardVisible={isKeyboardVisible}
+           setisKeyboardVisible={setisKeyboardVisible}
+           topimage={topimage}
+           />
+           <View style={[styles.inptcontainer, { justifyContent: isKeyboardVisible ? "center" : "" }]}>
               <View>
 
                 <Text style={styles.inputplaceholder}>Email</Text>
@@ -122,7 +84,7 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
                 </TouchableOpacity>
 
                 {route.name === "SignIn" && <View style={{ alignSelf: "flex-end", marginRight: wp(5), marginTop: wp(5) }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate("EmailEnter")}>
                     <Text >Forget Password ?</Text>
                   </TouchableOpacity>
                 </View>}
@@ -148,60 +110,3 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
 
 export default ImageAndInputScreen
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: BG_COLOR
-  },
-  imgandinputcontainer: {
-    flex: 5,
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  btncontainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    marginBottom: wp(5)
-  },
-  image: {
-    width: wp(80),
-    height: wp(100),
-  },
-  inptcontainer: {
-    flex: 1,
-    width: "100%",
-    gap: wp(8),
-  },
-  input: {
-    width: "95%",
-    backgroundColor: BLACK_COLOR,
-    alignSelf: "center",
-    borderRadius: 50,
-    color: "white",
-    fontSize: wp(3),
-    paddingHorizontal: wp(4),
-    fontFamily: "Poppins-Regular",
-    paddingBottom: 5
-  },
-  inputplaceholder: {
-    fontSize: wp(3.5),
-    fontFamily: "Poppins-Regular",
-    marginLeft: wp(6),
-    marginBottom: wp(1)
-  },
-  topheading: {
-    textAlign: "center",
-    paddingTop: wp(5),
-    fontSize: wp(5),
-    fontFamily: "Poppins-Regular",
-    color: "white"
-  },
-  pswrdInptContainer: {
-    position: "relative"
-  },
-  eyeiconContainer: {
-    position: "absolute",
-    right: wp(8),
-    bottom: wp(13)
-  },
-})

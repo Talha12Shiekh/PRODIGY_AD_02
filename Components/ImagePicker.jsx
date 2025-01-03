@@ -9,7 +9,7 @@ import { useRoute } from '@react-navigation/native';
 import { useGetUserImage, useSetUserImage } from '../App';
 import loginimage from "../assets/images/login.png";
 
-const ImagePicker = () => {
+const ImagePicker = ({ topimage }) => {
     const setuserimage = useSetUserImage();
 
     const userimage = useGetUserImage();
@@ -28,21 +28,17 @@ const ImagePicker = () => {
     const route = useRoute();
 
     let imagetoshow = "";
-    if(route.name == "SignIn") imagetoshow = loginimage;
-    else if(userimage == null) imagetoshow = ProfileImage;
+
+    if (route.name !== "SignUp") imagetoshow = topimage;
+    else if (userimage == null) imagetoshow = ProfileImage;
     else imagetoshow = userimage;
 
     return (
-        <View style={[styles.pickercontainer,{backgroundColor:route.name == "SignIn" ? "transparent" : "grey"}]}>
-            {/* <Image
-                source={userimage == null ? ProfileImage : userimage}
-                resizeMode='cover'
-                style={{ width: "100%", height: "100%", borderRadius: 100,transform:[{scale:userimage == null ? 1.5 : 1}] }}
-            /> */}
+        <View style={[styles.pickercontainer, { backgroundColor: route.name == "SignIn" ? "transparent" : "grey" }]}>
             <Image
                 source={imagetoshow}
                 resizeMode='cover'
-                style={{ width: "100%", height: "100%", borderRadius: 100,transform:[{scale:userimage == null ? 1.5 : 1}] }}
+                style={{ width: "100%", height: "100%", borderRadius: 100, transform: [{ scale: route.name == "SignUp" ? 1 : 1.3 }] }}
             />
             {route.name == "SignUp" && <TouchableOpacity style={styles.camerabtn} onPress={handleImagePicking}>
 
