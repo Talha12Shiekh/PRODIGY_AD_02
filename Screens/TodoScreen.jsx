@@ -10,6 +10,7 @@ export const InputContext = createContext(null);
 
 const TodoList = () => {
   const [value, setvalue] = useState('');
+  const [todos, settodos] = useState([]);
   const inputRef = useRef(null);
 
   return (

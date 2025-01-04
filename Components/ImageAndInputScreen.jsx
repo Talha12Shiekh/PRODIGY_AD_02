@@ -61,6 +61,7 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
                   style={styles.input}
                   onChangeText={t => handleChangeCredentials("email", t)}
                   value={email}
+                  placeholder='xyz@gmail.com'
                 />
               </View>
               <View style={styles.pswrdInptContainer}>
@@ -70,6 +71,7 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
                   style={styles.input}
                   secureTextEntry={showpswrd}
                   value={password}
+                  placeholder='••••••••'
                   onChangeText={p => handleChangeCredentials("password", p)}
                 />
                 <TouchableOpacity onPress={() => setshowpswrd(p => !p)} style={styles.eyeiconContainer}>

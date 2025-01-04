@@ -38,7 +38,7 @@ const ImagePicker = ({ topimage }) => {
             <Image
                 source={imagetoshow}
                 resizeMode='cover'
-                style={{ width: "100%", height: "100%", borderRadius: 100, transform: [{ scale: route.name == "SignUp" ? 1 : 1.3 }] }}
+                style={{ width: "100%", height: "100%", borderRadius: 100, transform: [{ scale: route.name == "SignUp" ? (userimage == null ? 1.5 : 1) : 1.3 }] }}
             />
             {route.name == "SignUp" && <TouchableOpacity style={styles.camerabtn} onPress={handleImagePicking}>
 

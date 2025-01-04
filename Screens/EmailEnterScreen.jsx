@@ -19,15 +19,9 @@ const EmailEnterScreen = () => {
 
   async function handleButtonClick() {
     setloading(true);
-    const actionCodeSettings = {
-      // The URL to redirect to after the password reset is successful.
-      // Ensure this URL is in your authorized domains list in Firebase.
-      url: 'myapp://resetpassword',
-      handleCodeInApp: true,
-    };
     if (email) {
       try {
-        await firebase.auth().sendPasswordResetEmail(email,actionCodeSettings);
+        await firebase.auth().sendPasswordResetEmail(email);
         setloading(false)
         ToastAndroid.show("Email sent !", ToastAndroid.SHORT);
       } catch (error) {

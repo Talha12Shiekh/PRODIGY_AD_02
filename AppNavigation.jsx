@@ -20,7 +20,6 @@ const AppNavigation = () => {
   const Stack = createNativeStackNavigator();
 
   function onAuthStateChanged(user) {
-    console.log("User",user);
     dispatch(setuser(user));
   }
 
