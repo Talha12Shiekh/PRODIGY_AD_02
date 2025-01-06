@@ -4,47 +4,37 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { BLACK_COLOR, DARK_GREEN_COLOR, WHITE_COLOR } from '../Constants';
+import {BLACK_COLOR, DARK_GREEN_COLOR, GREEN_COLOR, WHITE_COLOR} from '../Constants';
 import { InputContext } from '../Screens/TodoScreen';
-import { useDispatch, useSelector } from 'react-redux';
-import { addTodos, handleCangeEditSettings } from '../Redux/Slices/TodosSlice';
+import { useDispatch } from 'react-redux';
+import { addTodos, fetchTodos  } from '../Redux/Slices/TodosSlice';
 import { useGetUser } from '../App';
-import firestore from '@react-native-firebase/firestore';
 
-
-const TodoInput = ({ value, setvalue }) => {
+const TodoInput = ({value, setvalue}) => {
   const dispatch = useDispatch();
   const inputRef = useContext(InputContext);
-  const user = useGetUser();
+  const currentUser = useGetUser();
 
-  const { isEditing, editkey } = useSelector((state) => state.todosReducer);
-
+  const [todoloaded,settodoloaded] = useState(false);
 
   async function handleAddTodos() {
     try {
-      await firestore()
-        .collection('Todos')
-        .add({
-          value: value,
-          id: user.uid,
-        });
+      
+      settodoloaded(true);
+      setvalue("");
+      await dispatch(addTodos({value,id:currentUser.uid}));
+      await dispatch(fetchTodos(currentUser.uid));
+      settodoloaded(false);
     } catch (error) {
-      console.log(error);
-    }
-    // if(isEditing){
-    //   dispatch(addTodos({key:user.uid,value}));
-    //   dispatch(handleCangeEditSettings({ isEditing: false,editkey:null }));
-    // } else {
-    //   dispatch(addTodos({data:value,key:Date.now()}));
-    // }
-    setvalue("");
+      settodoloaded(false);
+    } 
   }
 
   return (
@@ -60,7 +50,10 @@ const TodoInput = ({ value, setvalue }) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleAddTodos} style={styles.button}>
-          <Text style={styles.btnText}>{isEditing ? "Edit" : "Add"} Task</Text>
+          {!todoloaded ? <Text style={styles.btnText}>Add Task</Text> : <ActivityIndicator
+          size="large"
+          color={GREEN_COLOR}
+          />}
         </TouchableOpacity>
       </View>
     </>
@@ -78,9 +71,9 @@ const styles = StyleSheet.create({
     backgroundColor: BLACK_COLOR,
     color: WHITE_COLOR,
     fontSize: wp(4),
-    fontFamily: "Poppins-Regular",
-    paddingTop: wp(5),
-    paddingBottom: wp(3)
+    fontFamily:"Poppins-Regular",
+    paddingTop:wp(5),
+    paddingBottom:wp(3)
   },
   buttonContainer: {
     marginVertical: hp(2),
@@ -89,12 +82,12 @@ const styles = StyleSheet.create({
     backgroundColor: DARK_GREEN_COLOR,
     padding: wp(3),
     borderRadius: 10,
-    paddingBottom: wp(2)
+    paddingBottom:wp(2)
   },
   btnText: {
     color: 'white',
     textAlign: 'center',
     fontSize: wp(4),
-    fontFamily: "Poppins-Regular",
+    fontFamily:"Poppins-Regular",
   },
 });

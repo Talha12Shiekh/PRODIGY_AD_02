@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-import firestore from '@react-native-firebase/firestore';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import firestore, { getDocs, query, where } from '@react-native-firebase/firestore';
 import { useGetUser } from '../../App';
+import { ToastAndroid } from 'react-native';
 
 const initialState = {
   todos: [],
@@ -8,30 +9,40 @@ const initialState = {
   editkey: null
 }
 
+const todosRefernce = firestore().collection("Todos");
+
+export const addTodos = createAsyncThunk(
+  "addTodos",
+  async ({value,id}) => {
+    await todosRefernce.add({
+      value,
+      id,
+    });
+  }
+)
+
+
+
+export const fetchTodos = createAsyncThunk(
+  "fetchTodos",
+  async (userid) => {
+      const q = query(todosRefernce, where("id", "==", userid));
+      const querySnapshot = await getDocs(q);
+      let data = [];
+      querySnapshot.forEach(qry => {
+        const todos = qry.data() ;
+        data.push({ ...todos, id: qry.id });
+      });
+      return data;
+  }
+)
+
+
 
 export const TodosSlice = createSlice({
   name: 'todosSlice',
   initialState,
   reducers: {
-    addTodos: (state, { payload }) => {
-      // if(state.isEditing){
-      //   const editTodoIndex = state.todos.findIndex(t => t.key === payload.key);
-      //   if (editTodoIndex !== -1) {
-      //     state.todos[editTodoIndex].todo = payload.value;
-      //   }
-      // }else {
-      //   state.todos = [...state.todos, { todo: payload.data, key: payload.key }]
-      // // }
-      // firestore()
-      //   .collection('Todos')
-      //   .add({
-      //     value: payload.value,
-      //     id: user.uid,
-      //   })
-      //   .then(() => {
-      //     console.log('User added!');
-      //   });
-    },
     deleteTodos: (state, { payload }) => {
       const newtodos = [...state.todos];
       const deletedTodos = newtodos.filter(t => t.key !== payload.key);
@@ -42,9 +53,19 @@ export const TodosSlice = createSlice({
       state.editkey = payload.editkey;
     }
   },
+  extraReducers: (builder) => {
+
+    builder.addCase(fetchTodos.fulfilled, (state, action) => {
+      state.todos = action.payload;
+      
+    });
+    builder.addCase(addTodos.fulfilled, (state, action) => {
+      state.todos = [...state.todos,action.meta.arg];
+    });
+  },
 })
 
-export const { addTodos, deleteTodos, handleCangeEditSettings } = TodosSlice.actions;
+export const { deleteTodos, handleCangeEditSettings } = TodosSlice.actions;
 
 export default TodosSlice.reducer
 
