@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import firestore, { getDocs, query, where } from '@react-native-firebase/firestore';
-import { useGetUser } from '../../App';
-import { ToastAndroid } from 'react-native';
 
 const initialState = {
   todos: [],
@@ -67,5 +65,4 @@ export const TodosSlice = createSlice({
 
 export const { deleteTodos, handleCangeEditSettings } = TodosSlice.actions;
 
-export default TodosSlice.reducer
-
+export default TodosSlice.reducer;

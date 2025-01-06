@@ -1,18 +1,19 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import SingleTodo from './SingleTodo';
-import {SwipeListView} from 'react-native-swipe-list-view';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import DeleteAndEditItem from './DeleteAndEditItem';
 import { useGetTodos, useGetUser } from '../App';
 import { useDispatch } from 'react-redux';
 import { fetchTodos } from '../Redux/Slices/TodosSlice';
 
-const TodosContainer = ({setvalue}) => {
+
+const TodosContainer = ({ setvalue }) => {
   const dispatch = useDispatch();
   const currentUser = useGetUser();
-  const [todosloaded,settodosloaded] = useState(false);
+  const [todosloaded, settodosloaded] = useState(false);
 
-  async function handleFetchTodos(){
+  async function handleFetchTodos() {
     try {
       settodosloaded(true);
       await dispatch(fetchTodos(currentUser.uid));
@@ -24,20 +25,20 @@ const TodosContainer = ({setvalue}) => {
 
   useEffect(() => {
     handleFetchTodos();
-  },[])
+  }, []);
 
   const newtodos = useGetTodos();
 
   return (
-    <View style={styles.todoContainer}> 
-     <SwipeListView
-      showsVerticalScrollIndicator={false}
+    <View style={styles.todoContainer}>
+      <SwipeListView
+        showsVerticalScrollIndicator={false}
         data={newtodos}
         renderItem={(data, rowMap) => (
-          <SingleTodo todosloaded={todosloaded} data={data} rowMap={rowMap} />
+          <SingleTodo data={data} rowMap={rowMap} />
         )}
         renderHiddenItem={(data, rowMap) => (
-          <DeleteAndEditItem  setvalue={setvalue}  data={data} rowMap={rowMap} />
+          <DeleteAndEditItem setvalue={setvalue} data={data} rowMap={rowMap} />
         )}
         keyExtractor={item => item.id}
         leftOpenValue={55}
@@ -52,5 +53,5 @@ export default TodosContainer;
 const styles = StyleSheet.create({
   todoContainer: {
     flex: 1,
-  },
+  }
 });

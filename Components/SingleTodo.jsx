@@ -14,19 +14,16 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { Skeleton } from 'moti/skeleton';
 
-const SingleTodo = ({ data, rowMap,todosloaded }) => {
+const SingleTodo = ({ data, rowMap }) => {
   return (
-    <Skeleton>
-      <View style={styles.singleTodo}>
+    <View style={styles.singleTodo}>
         <View>
           <Text numberOfLines={1} style={styles.todoTxt}>
             {data.item.value}
           </Text>
         </View>
-      </View>
-    </Skeleton>
+    </View>
   );
 };
 
