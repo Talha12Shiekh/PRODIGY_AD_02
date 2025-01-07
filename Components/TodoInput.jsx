@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import React, { useContext, useState } from 'react';
 import {
@@ -14,24 +15,33 @@ import {
 import {BLACK_COLOR, DARK_GREEN_COLOR, GREEN_COLOR, WHITE_COLOR} from '../Constants';
 import { InputContext } from '../Screens/TodoScreen';
 import { useDispatch } from 'react-redux';
-import { addTodos, fetchTodos  } from '../Redux/Slices/TodosSlice';
-import { useGetUser } from '../App';
+import { addTodos, editTodos, fetchTodos, setisEditing  } from '../Redux/Slices/TodosSlice';
+import { useGetEditKey, useGetUser, useIsEditing } from '../App';
 
 const TodoInput = ({value, setvalue}) => {
   const dispatch = useDispatch();
   const inputRef = useContext(InputContext);
   const currentUser = useGetUser();
+  const editing = useIsEditing();
+  const editkey = useGetEditKey();
 
   const [todoloaded,settodoloaded] = useState(false);
 
   async function handleAddTodos() {
+
+    settodoloaded(true);
     try {
-      
-      settodoloaded(true);
+      if(!editing){
+        await dispatch(addTodos({value,id:currentUser.uid}));
+        ToastAndroid.show("Todo added successfully !",ToastAndroid.LONG);
+      }else{
+        await dispatch(editTodos({key:editkey,value:value}));
+        dispatch(setisEditing(false));
+        ToastAndroid.show("Todo edited successfully !",ToastAndroid.LONG);
+      }
       setvalue("");
-      await dispatch(addTodos({value,id:currentUser.uid}));
-      await dispatch(fetchTodos(currentUser.uid));
       settodoloaded(false);
+      await dispatch(fetchTodos(currentUser.uid));
     } catch (error) {
       settodoloaded(false);
     } 
@@ -50,7 +60,7 @@ const TodoInput = ({value, setvalue}) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleAddTodos} style={styles.button}>
-          {!todoloaded ? <Text style={styles.btnText}>Add Task</Text> : <ActivityIndicator
+          {!todoloaded ? <Text style={styles.btnText}>{editing ? "Edit" : "Add"} Task</Text> : <ActivityIndicator
           size="large"
           color={GREEN_COLOR}
           />}

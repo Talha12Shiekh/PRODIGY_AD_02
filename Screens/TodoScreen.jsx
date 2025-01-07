@@ -21,6 +21,7 @@ const TodoList = () => {
         setvalue={setvalue}
       />
       <TodosContainer
+      value={value}
         setvalue={setvalue}
       />
     </View>

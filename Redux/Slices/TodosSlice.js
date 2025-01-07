@@ -19,6 +19,21 @@ export const addTodos = createAsyncThunk(
   }
 )
 
+export const deleteTodos = createAsyncThunk(
+  "deleteTodos",
+  async (key) => {
+    await todosRefernce.doc(key).delete();
+  }
+)
+
+
+export const editTodos = createAsyncThunk(
+  "editTodos",
+  async ({key,value}) => {
+    await todosRefernce.doc(key).update({value});
+  }
+)
+
 
 
 export const fetchTodos = createAsyncThunk(
@@ -41,21 +56,16 @@ export const TodosSlice = createSlice({
   name: 'todosSlice',
   initialState,
   reducers: {
-    deleteTodos: (state, { payload }) => {
-      const newtodos = [...state.todos];
-      const deletedTodos = newtodos.filter(t => t.key !== payload.key);
-      state.todos = deletedTodos;
+    seteditkey: (state, { payload }) => {
+      state.editkey = payload;
     },
-    handleCangeEditSettings: (state, { payload }) => {
-      state.isEditing = payload.isEditing;
-      state.editkey = payload.editkey;
-    }
+    setisEditing: (state, { payload }) => {
+      state.isEditing = payload;
+    },
   },
   extraReducers: (builder) => {
-
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
       state.todos = action.payload;
-      
     });
     builder.addCase(addTodos.fulfilled, (state, action) => {
       state.todos = [...state.todos,action.meta.arg];
@@ -63,6 +73,6 @@ export const TodosSlice = createSlice({
   },
 })
 
-export const { deleteTodos, handleCangeEditSettings } = TodosSlice.actions;
+export const { seteditkey,setisEditing } = TodosSlice.actions;
 
 export default TodosSlice.reducer;

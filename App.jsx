@@ -7,6 +7,12 @@ import { setuserimage, setUserLoading } from "./Redux/Slices/UserSlice";
 export const useGetTodos = () => {
   return useSelector((state) => state.todosReducer.todos);
 }
+export const useIsEditing = () => {
+  return useSelector((state) => state.todosReducer.isEditing);
+}
+export const useGetEditKey = () => {
+  return useSelector((state) => state.todosReducer.editkey);
+}
 export const useGetUserLoading = () => {
   return useSelector((state) => state.userReducer.userLoading);
 }

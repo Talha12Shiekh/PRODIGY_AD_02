@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {  StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import SingleTodo from './SingleTodo';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -7,8 +7,7 @@ import { useGetTodos, useGetUser } from '../App';
 import { useDispatch } from 'react-redux';
 import { fetchTodos } from '../Redux/Slices/TodosSlice';
 
-
-const TodosContainer = ({ setvalue }) => {
+const TodosContainer = ({ setvalue,value }) => {
   const dispatch = useDispatch();
   const currentUser = useGetUser();
   const [todosloaded, settodosloaded] = useState(false);
@@ -34,13 +33,13 @@ const TodosContainer = ({ setvalue }) => {
       <SwipeListView
         showsVerticalScrollIndicator={false}
         data={newtodos}
-        renderItem={(data, rowMap) => (
-          <SingleTodo data={data} rowMap={rowMap} />
-        )}
+        renderItem={(data, rowMap) => {
+         return <SingleTodo data={data} rowMap={rowMap} />
+        }}
         renderHiddenItem={(data, rowMap) => (
-          <DeleteAndEditItem setvalue={setvalue} data={data} rowMap={rowMap} />
+          <DeleteAndEditItem value={value} setvalue={setvalue} data={data} rowMap={rowMap} />
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={todo => todo.id}
         leftOpenValue={55}
         rightOpenValue={-55}
       />
