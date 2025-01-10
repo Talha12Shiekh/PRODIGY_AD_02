@@ -62,7 +62,7 @@ const WelcomeScreen = ({ navigation }) => {
       </View>
       <View style={styles.btnsContainer}>
         <View style={styles.headingcontainer}>
-          <Text style={styles.heading}>Tk Todos</Text>
+          <Text style={styles.heading}>Tk Notes</Text>
         </View>
         <SingleButton
           text="Sign In"

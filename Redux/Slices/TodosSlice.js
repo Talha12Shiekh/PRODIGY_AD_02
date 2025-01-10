@@ -4,7 +4,7 @@ import firestore, { getDocs, query, where } from '@react-native-firebase/firesto
 const initialState = {
   todos: [],
   isEditing: false,
-  editkey: null
+  editkey: null,
 }
 
 const todosRefernce = firestore().collection("Todos");

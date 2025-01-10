@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 const BackButton = () => {
     const navigation = useNavigation()
     return (
-            <TouchableOpacity style={{zIndex:999999999999}} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={{ zIndex: 999999999999 }} onPress={() => navigation.goBack()}>
 
             <View style={styles.container}>
 
@@ -18,7 +18,7 @@ const BackButton = () => {
                     name="arrow-left"
                 />
             </View>
-            </TouchableOpacity>
+        </TouchableOpacity>
 
     )
 }

@@ -10,25 +10,22 @@ import { Menu } from './Menu';
 
 const LogoAndProfile = () => {
     let currentUser = auth().currentUser;
-    const menuRef = useRef(null);
 
-    // talha123@gmail.com
-    // talha123
+    const menuRef = useRef(null);
 
     const [isImageUpdated, setIsImageUpdated] = useState(false);
 
     let userimage = useGetUserImage();
 
     async function handleChangeProfileImage() {
-        // Ensure the userimage.uri is a valid URL before updating the profile
+
         if (userimage?.uri && !isImageUpdated) {
             try {
                 await firebase.auth().currentUser.updateProfile({
-                    photoURL: userimage.uri, // Set custom profile image URL
+                    photoURL: userimage.uri,
                 });
 
-                setIsImageUpdated(true); // Prevent unnecessary updates after successful update
-                console.log("Profile photo updated successfully!");
+                setIsImageUpdated(true);
             } catch (error) {
                 console.log(error);
             }
@@ -57,6 +54,7 @@ const LogoAndProfile = () => {
     if (currentUser?.photoURL) imagetoshow = { uri: currentUser?.photoURL }
     else if (userimage?.uri) imagetoshow = { uri: userimage?.uri }
     else imagetoshow = ProfileImage;
+
 
     return (
         <>

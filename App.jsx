@@ -41,16 +41,7 @@ export const useSetUserImage = () => {
 const App = () => {
 
   return (
-    <NavigationContainer
-    linking={{
-      prefixes: ["myapp://"],
-      config: {
-        screens: {
-          ResetPassword: "resetpassword",
-        },
-      },
-    }}
-    >
+    <NavigationContainer>
       <Provider store={store}>
         <AppNavigation />
       </Provider>
