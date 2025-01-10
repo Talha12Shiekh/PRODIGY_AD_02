@@ -65,5 +65,18 @@ export const styles = StyleSheet.create({
       alignSelf:"center",
       textAlign:"center",
       marginVertical:wp(4)
+    },
+    singleTodo: {
+      backgroundColor: BLACK_COLOR,
+      padding: wp(5),
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginVertical: hp(0.6),
+    },
+    todoTxt: {
+      fontSize: wp(4),
+      fontFamily: "Poppins-Regular",
     }
   })
