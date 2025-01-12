@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
     inptcontainer: {
       flex: 1,
       width: "100%",
-      gap: wp(8),
     },
     input: {
       width: "95%",
@@ -35,7 +34,7 @@ export const styles = StyleSheet.create({
       fontSize: wp(3),
       paddingHorizontal: wp(4),
       fontFamily: "Poppins-Regular",
-      paddingBottom: 5
+      paddingBottom: 5,
     },
     inputplaceholder: {
       fontSize: wp(3.5),
@@ -51,12 +50,12 @@ export const styles = StyleSheet.create({
       color: "white"
     },
     pswrdInptContainer: {
-      position: "relative"
+      position: "relative",
     },
     eyeiconContainer: {
       position: "absolute",
       right: wp(8),
-      bottom: wp(13)
+      bottom: 12,
     },
     dontworrytext:{
       fontFamily: "Poppins-Regular",
@@ -78,5 +77,8 @@ export const styles = StyleSheet.create({
     todoTxt: {
       fontSize: wp(4),
       fontFamily: "Poppins-Regular",
+    },
+    frgtpswrdcontainer:{
+      flex:1,
     }
   })

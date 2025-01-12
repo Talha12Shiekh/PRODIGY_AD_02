@@ -28,7 +28,10 @@ const TodoInput = ({value, setvalue}) => {
   const [todoloaded,settodoloaded] = useState(false);
 
   async function handleAddTodos() {
-
+    if(value == "") {
+      ToastAndroid.show("You cannot add an empty item !",ToastAndroid.LONG);
+      return
+    };
     settodoloaded(true);
     try {
       if(!editing){

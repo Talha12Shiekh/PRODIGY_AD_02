@@ -11,14 +11,14 @@ import { useGetUserLoading } from '../App'
 import { styles } from '../styles'
 import ImagePickerContainer from './ImagePickerContainer'
 
-const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, credentials, handleChangeCredentials, setcredentials,topimage }) => {
-  
+const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, credentials, handleChangeCredentials, setcredentials, topimage }) => {
+
   const [showpswrd, setshowpswrd] = useState(true);
 
   const [isKeyboardVisible, setisKeyboardVisible] = useState(false);
-  
+
   const navigation = useNavigation();
- 
+
   const route = useRoute();
 
   const userloading = useGetUserLoading();
@@ -27,12 +27,12 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
 
 
   function handleButtonClick() {
-      handleActionofButtonClick()
-      setcredentials({
-        email: "",
-        password: "",
-        image: ""
-      });
+    handleActionofButtonClick()
+    setcredentials({
+      email: "",
+      password: "",
+      image: ""
+    });
   }
 
 
@@ -48,13 +48,13 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
         <View style={{ flex: 1 }}>
 
           <View style={styles.imgandinputcontainer}>
-           <ImagePickerContainer
-           isKeyboardVisible={isKeyboardVisible}
-           setisKeyboardVisible={setisKeyboardVisible}
-           topimage={topimage}
-           />
-           <View style={[styles.inptcontainer, { justifyContent: isKeyboardVisible ? "center" : "" }]}>
-              <View>
+            <ImagePickerContainer
+              isKeyboardVisible={isKeyboardVisible}
+              setisKeyboardVisible={setisKeyboardVisible}
+              topimage={topimage}
+            />
+            <View style={[styles.inptcontainer, {justifyContent: isKeyboardVisible ? "center" : ""}]}>
+              <View style={{marginBottom:wp(8)}}>
 
                 <Text style={styles.inputplaceholder}>Email</Text>
                 <TextInput
@@ -84,6 +84,9 @@ const ImageAndInputScreen = ({ toptext, btntext, handleActionofButtonClick, cred
                     />
                   </View>
                 </TouchableOpacity>
+
+              </View>
+              <View style={styles.frgtpswrdcontainer}>
 
                 {route.name === "SignIn" && <View style={{ alignSelf: "flex-end", marginRight: wp(5), marginTop: wp(5) }}>
                   <TouchableOpacity onPress={() => navigation.navigate("EmailEnter")}>
